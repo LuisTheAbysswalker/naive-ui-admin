@@ -21,8 +21,7 @@ export interface IUserState {
   info: UserInfoType;
 }
 
-export const useUserStore = defineStore({
-  id: 'app-user',
+export const useUserStore = defineStore('app-user', {
   state: (): IUserState => ({
     token: storage.get(ACCESS_TOKEN, ''),
     username: '',
