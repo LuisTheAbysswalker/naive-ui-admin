@@ -6,26 +6,19 @@ const Random = Mock.Random;
 
 const token = Random.string('upper', 32, 32);
 const user = {
+  userId: 'xxx',
   username: 'admin',
 };
 
 const adminInfo = {
-  userId: '1',
   username: 'admin',
-  realName: 'Admin',
   avatar: Random.image(),
-  desc: 'manager',
-  password: Random.string('upper', 4, 16),
   token,
   user,
   permissions: [
     {
       label: 'Dashboard',
       value: 'dashboard_console',
-    },
-    {
-      label: 'Monitor',
-      value: 'dashboard_monitor',
     },
     {
       label: 'Workplace',

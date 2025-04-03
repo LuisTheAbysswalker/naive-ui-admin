@@ -101,31 +101,29 @@
       <div class="layout-header-trigger layout-header-trigger-min">
         <n-dropdown trigger="hover" @select="avatarSelect" :options="avatarOptions">
           <div class="avatar">
-            <n-avatar :src="websiteConfig.logo">
+            <n-avatar :src="websiteConfig.logo" round :size="18">
               <template #icon>
                 <UserOutlined />
               </template>
             </n-avatar>
             <n-divider vertical />
-            <span>{{ username }}</span>
+            <span class="font-bold text-base">{{ username }}</span>
           </div>
         </n-dropdown>
       </div>
-      <!--设置-->
-      <div class="layout-header-trigger layout-header-trigger-min" @click="openSetting">
+      <!--退出登录-->
+      <div class="layout-header-trigger layout-header-trigger-min" @click="doLogout">
         <n-tooltip placement="bottom-end">
           <template #trigger>
-            <n-icon size="18" style="font-weight: bold">
-              <SettingOutlined />
+            <n-icon size="20" style="font-weight: bold">
+              <LogoutOutlined />
             </n-icon>
           </template>
-          <span>项目配置</span>
+          <span>logout</span>
         </n-tooltip>
       </div>
     </div>
   </div>
-  <!--项目配置-->
-  <ProjectSetting ref="drawerSetting" />
 </template>
 
 <script lang="ts">
@@ -133,7 +131,6 @@
   import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
   import { AsideMenu } from '@/layout/components/Menu';
   import { RedirectName } from '@/router/constant';
-  import { useScreenLockStore } from '@/store/modules/screenLock';
   import { useUserStore } from '@/store/modules/user';
   import { TABS_ROUTES } from '@/store/mutation-types';
   import { NDialogProvider, useDialog, useMessage } from 'naive-ui';
@@ -156,7 +153,6 @@
     emits: ['update:collapsed'],
     setup(props, { emit }) {
       const userStore = useUserStore();
-      const useLockscreen = useScreenLockStore();
       const message = useMessage();
       const dialog = useDialog();
       const { navMode, navTheme, headerSetting, menuSetting, crumbsSetting } = useProjectSetting();
@@ -233,13 +229,13 @@
       // 退出登录
       const doLogout = () => {
         dialog.info({
-          title: '提示',
-          content: '您确定要退出登录吗',
-          positiveText: '确定',
-          negativeText: '取消',
+          title: 'Notice',
+          content: 'Are you sure you want to logout?',
+          positiveText: 'Yes',
+          negativeText: 'No',
           onPositiveClick: () => {
             userStore.logout().then(() => {
-              message.success('成功退出登录');
+              message.success('Successfully logged out');
               // 移除标签页
               localStorage.removeItem(TABS_ROUTES);
               router
@@ -276,37 +272,11 @@
       };
 
       // 图标列表
-      const iconList = [
-        {
-          icon: 'LockOutlined',
-          tips: '锁屏',
-          eventObject: {
-            click: () => useLockscreen.setLock(true),
-          },
-        },
-      ];
-      const avatarOptions = [
-        {
-          label: '个人设置',
-          key: 1,
-        },
-        {
-          label: '退出登录',
-          key: 2,
-        },
-      ];
+      const iconList = [];
+      const avatarOptions = [];
 
       //头像下拉菜单
-      const avatarSelect = (key) => {
-        switch (key) {
-          case 1:
-            router.push({ name: 'Setting' });
-            break;
-          case 2:
-            doLogout();
-            break;
-        }
-      };
+      const avatarSelect = () => {};
 
       function openSetting() {
         const { openDrawer } = drawerSetting.value;

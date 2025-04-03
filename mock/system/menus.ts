@@ -17,15 +17,7 @@ const menusList = [
         name: 'dashboard_console',
         component: '/dashboard/console/console',
         meta: {
-          title: '主控台',
-        },
-      },
-      {
-        path: 'monitor',
-        name: 'dashboard_monitor',
-        component: '/dashboard/monitor/monitor',
-        meta: {
-          title: '监控页',
+          title: 'Dashboard',
         },
       },
       {
@@ -34,7 +26,7 @@ const menusList = [
         component: '/dashboard/workplace/workplace',
         meta: {
           hidden: true,
-          title: '工作台',
+          title: 'Workplace',
         },
       },
     ],

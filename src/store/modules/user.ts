@@ -7,6 +7,7 @@ import { getUserInfo as getUserInfoApi, login } from '@/api/system/user';
 import { storage } from '@/utils/Storage';
 
 export type UserInfoType = {
+  userId: string;
   username: string;
 };
 
@@ -68,6 +69,7 @@ export const useUserStore = defineStore('app-user', {
         this.setToken(result.token);
         this.setUserInfo(result.user);
       }
+      console.log('🚀 ~ login ~ response:', response);
       return response;
     },
 
@@ -89,7 +91,7 @@ export const useUserStore = defineStore('app-user', {
     // 登出
     async logout() {
       this.setPermissions([]);
-      this.setUserInfo({ username: '' });
+      this.setUserInfo({ userId: '', username: '' });
       storage.remove(ACCESS_TOKEN);
       storage.remove(CURRENT_USER);
     },

@@ -15,17 +15,12 @@ export function getUserInfo() {
  * @description: 用户登录
  */
 export function login(params) {
-  return Alova.Post<InResult>(
-    '/login',
-    {
-      params,
+  return Alova.Post<InResult>('/login', params, {
+    meta: {
+      ignoreToken: true,
+      isReturnNativeResponse: true,
     },
-    {
-      meta: {
-        isReturnNativeResponse: true,
-      },
-    }
-  );
+  });
 }
 
 /**

@@ -1,8 +1,8 @@
+import { warn } from '@/utils/log';
 import { createAlova } from 'alova';
 import VueHook from 'alova/vue';
 import adapterFetch from 'alova/fetch';
 import { createAlovaMockAdapter } from '@alova/mock';
-import { isString } from 'lodash-es';
 import mocks from './mocks';
 import { useUser } from '@/store/modules/user';
 import { storage } from '@/utils/Storage';
@@ -61,31 +61,21 @@ export const Alova = createAlova({
     if (!method.meta?.ignoreToken && token) {
       method.config.headers['Authorization'] = 'Bearer ' + token;
     }
+    method.config.headers['Content-Type'] = 'application/json';
     // 处理 api 请求前缀
     const isUrlStr = isUrl(method.url as string);
     if (!isUrlStr && urlPrefix) {
       method.url = `${urlPrefix}${method.url}`;
-    }
-    if (!isUrlStr && apiUrl && isString(apiUrl)) {
-      method.url = `${apiUrl}${method.url}`;
     }
   },
   responded: {
     onSuccess: async (response, method) => {
       const res = (response.json && (await response.json())) || response.body;
 
-      // 是否返回原生响应头 比如：需要获取响应头时使用该属性
-      if (method.meta?.isReturnNativeResponse) {
-        return res;
-      }
-      // 请根据自身情况修改数据结构
       const { message, code, result } = res;
-
-      // 不进行任何处理，直接返回
-      // 用于需要直接获取 code、result、 message 这些信息时开启
-      if (method.meta?.isTransformResponse === false) {
-        return res.data;
-      }
+      console.log('🚀 ~ onSuccess ~ message:', message);
+      console.log('🚀 ~ onSuccess ~ code:', code);
+      console.log('🚀 ~ onSuccess ~ result:', result);
 
       // @ts-ignore
       const Message = window.$message;
@@ -93,26 +83,31 @@ export const Alova = createAlova({
       const Modal = window.$dialog;
 
       const LoginPath = PageEnum.BASE_LOGIN;
-      if (ResultEnum.SUCCESS === code) {
-        return result;
-      }
+
       // 需要登录
-      if (code === 912) {
-        Modal?.warning({
-          title: 'Notice',
-          content: 'Login identity has expired, please log in again!',
-          okText: 'OK',
-          closable: false,
-          maskClosable: false,
-          onOk: async () => {
-            storage.clear();
-            window.location.href = LoginPath;
-          },
-        });
-      } else {
+      if (code === 401) {
+        Message?.warning(message);
+        storage.clear();
+        window.location.href = LoginPath;
+      } else if (code !== 200) {
         // 可按需处理错误 一般情况下不是 912 错误，不一定需要弹出 message
         Message?.error(message);
         throw new Error(message);
+      }
+
+      // 是否返回原生响应头 比如：需要获取响应头时使用该属性
+      if (method.meta?.isReturnNativeResponse) {
+        return res;
+      }
+
+      // 不进行任何处理，直接返回
+      // 用于需要直接获取 code、result、 message 这些信息时开启
+      if (method.meta?.isTransformResponse === false) {
+        return res.data;
+      }
+
+      if (ResultEnum.SUCCESS === code) {
+        return result;
       }
     },
   },
