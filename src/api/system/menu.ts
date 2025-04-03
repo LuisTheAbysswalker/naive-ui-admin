@@ -16,13 +16,3 @@ export interface ListDate {
 export function adminMenus() {
   return Alova.Get('/menus');
 }
-
-/**
- * 获取tree菜单列表
- * @param params
- */
-export function getMenuList(params?) {
-  return Alova.Get<{ list: ListDate[] }>('/menu/list', {
-    params,
-  });
-}

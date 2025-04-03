@@ -42,5 +42,5 @@ const menusList = [
 ];
 
 export default defineMock({
-  '/api/menus': () => resultSuccess(menusList),
+  '/menus': () => resultSuccess(menusList),
 });

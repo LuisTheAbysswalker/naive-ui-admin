@@ -29,17 +29,10 @@ export function login(params) {
 }
 
 /**
- * @description: 用户修改密码
- */
-export function changePassword(params, uid) {
-  return Alova.Post(`/user/u${uid}/changepw`, { params });
-}
-
-/**
  * @description: 用户登出
  */
 export function logout(params) {
-  return Alova.Post('/login/logout', {
+  return Alova.Post('/logout', {
     params,
   });
 }

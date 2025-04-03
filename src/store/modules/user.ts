@@ -7,15 +7,12 @@ import { getUserInfo as getUserInfoApi, login } from '@/api/system/user';
 import { storage } from '@/utils/Storage';
 
 export type UserInfoType = {
-  // TODO: add your own data
   username: string;
-  email: string;
 };
 
 export interface IUserState {
   token: string;
   username: string;
-  welcome: string;
   avatar: string;
   permissions: any[];
   info: UserInfoType;
@@ -25,7 +22,6 @@ export const useUserStore = defineStore('app-user', {
   state: (): IUserState => ({
     token: storage.get(ACCESS_TOKEN, ''),
     username: '',
-    welcome: '',
     avatar: '',
     permissions: [],
     info: storage.get(CURRENT_USER, {}),
@@ -70,7 +66,7 @@ export const useUserStore = defineStore('app-user', {
         storage.set(CURRENT_USER, result, ex);
         storage.set(IS_SCREENLOCKED, false);
         this.setToken(result.token);
-        this.setUserInfo(result);
+        this.setUserInfo(result.user);
       }
       return response;
     },
@@ -93,7 +89,7 @@ export const useUserStore = defineStore('app-user', {
     // 登出
     async logout() {
       this.setPermissions([]);
-      this.setUserInfo({ username: '', email: '' });
+      this.setUserInfo({ username: '' });
       storage.remove(ACCESS_TOKEN);
       storage.remove(CURRENT_USER);
     },
