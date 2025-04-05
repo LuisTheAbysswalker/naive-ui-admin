@@ -29,6 +29,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/dashboard/console/console.vue'),
       },
       {
+        path: 'detail/:id',
+        name: `${routeName}_detail`,
+        meta: {
+          title: 'Detail',
+          permissions: ['dashboard_console'],
+          affix: true,
+        },
+        component: () => import('@/views/dashboard/detail/detail.vue'),
+      },
+      {
         path: 'workplace',
         name: `${routeName}_workplace`,
         meta: {
