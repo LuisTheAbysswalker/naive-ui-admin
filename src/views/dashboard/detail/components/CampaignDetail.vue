@@ -23,33 +23,18 @@
       </div>
     </div>
 
-    <!-- 主要内容区域 -->
-    <n-grid :cols="4" :x-gap="16" :y-gap="16">
-      <!-- 左侧信息 -->
-      <n-grid-item span="1">
-        <n-card title="Target Audience" class="mb-4">
-          <div class="text-lg font-medium">TikTok</div>
-        </n-card>
-
-        <n-card title="Hashtags" class="mb-4">
-          <n-space>
-            <n-tag v-for="tag in ['#fashion', '#summer', '#beachwear']" :key="tag" size="small">
-              {{ tag }}
-            </n-tag>
-          </n-space>
-        </n-card>
+    <!-- 三个卡片的网格布局 -->
+    <n-grid :cols="3" :x-gap="16">
+      <n-grid-item>
+        <TikTokSourcing />
       </n-grid-item>
 
-      <!-- 中间进度区域 -->
-      <n-grid-item span="2">
+      <n-grid-item>
         <CampaignProgress />
       </n-grid-item>
 
-      <!-- 右侧状态 -->
-      <n-grid-item span="1">
-        <n-card title="Current Stage" class="mb-4">
-          <div class="text-lg font-medium text-primary">Follow-ups & Responses</div>
-        </n-card>
+      <n-grid-item>
+        <EmailCampaignStatus />
       </n-grid-item>
     </n-grid>
 
@@ -79,19 +64,11 @@
 <script setup>
   import { h } from 'vue';
   import { useRouter } from 'vue-router';
-  import {
-    NButton,
-    NCard,
-    NDataTable,
-    NGrid,
-    NGridItem,
-    NIcon,
-    NProgress,
-    NSpace,
-    NTag,
-  } from 'naive-ui';
-  import { ArrowBack, CheckmarkOutline, Download } from '@vicons/ionicons5';
+  import { NButton, NCard, NDataTable, NGrid, NGridItem, NIcon, NTag } from 'naive-ui';
+  import { ArrowBack, Download } from '@vicons/ionicons5';
   import CampaignProgress from './CampaignProgress.vue';
+  import TikTokSourcing from './TikTokSourcing.vue';
+  import EmailCampaignStatus from './EmailCampaignStatus.vue';
 
   const router = useRouter();
 

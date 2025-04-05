@@ -6,7 +6,7 @@
         <span class="text-gray-600">Overall</span>
         <span class="font-medium">67%</span>
       </div>
-      <n-progress type="line" :percentage="67" :height="8" :border-radius="4" />
+      <n-progress type="line" :percentage="67" :height="8" :border-radius="4" color="#22C55E" />
 
       <!-- 进度时间线 -->
       <div class="mt-6">
